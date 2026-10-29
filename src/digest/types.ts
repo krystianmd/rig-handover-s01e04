@@ -16,4 +16,4 @@ export type NightDigest = {
   badLines: number;
 };
 
-export declare function readNight(runsDir: string, night: string): NightDigest;
+export { readNight } from './reader.js';
