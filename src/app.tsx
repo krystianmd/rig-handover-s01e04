@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { loadConfig, type RigConfig } from './config.js';
 import { readNight } from './digest/types.js';
 import { lane } from './lane.js';
+import { createDigestApi } from './routes/digest-api.js';
 import { readStatus } from './status.js';
 import { DigestPage } from './views/digest.js';
 import { Layout } from './views/layout.js';
@@ -14,6 +15,7 @@ function isMissingFile(error: unknown): error is NodeJS.ErrnoException {
 export function createApp(config: RigConfig = loadConfig()) {
   const app = new Hono();
 
+  app.route('/', createDigestApi(config.runsDir));
   app.get('/health', (c) => c.json({ ok: true, lane: lane().id }));
 
   app.get('/', (c) =>
